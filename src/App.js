@@ -2,16 +2,19 @@ import { useState } from 'react';
 import { ethers } from 'ethers';
 import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json';
 import Token from './artifacts/contracts/Token.sol/Token.json';
+import NDToken from './artifacts/contracts/NDToken.sol/NDToken.json';
 
 import './App.css';
 
-const greeterAddress = "0x2c4079f7e364BE9E6bD733F062eE33f66c612fa7";
-const tokenAddress = "0x7567E5F8c3d20d1c75DC9a91fDD51BF57dD20010";
+const greeterAddress = `${process.env.REACT_APP_GREETER_ADDRESS}`;
+const tokenAddress = `${process.env.REACT_APP_TOKEN_ADDRESS}`;
+const ndTokenAddress = `${process.env.REACT_APP_ND_TOKEN_ADDRESS}`;
 
 const App = () => {
   const [greeting, setGreetingValue] = useState();
   const [userAccount, setUserAccount] = useState();
   const [amount, setAmount] = useState();
+  const [ndTokenInfo, setNDTokenInfo] = useState();
 
   const requestAccount = async () => {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -71,6 +74,29 @@ const App = () => {
     }
   }
 
+  const fetchNDTokenSymbolAndName = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      console.log({ provider });
+      const contract = new ethers.Contract(ndTokenAddress, NDToken.abi, provider);
+
+      try {
+        const name = await contract.name();
+        const symbol = await contract.symbol();
+        const decimals = await contract.decimals();
+        const totalSupply = await contract.totalSupply();
+
+        setNDTokenInfo(`${symbol} ${name}, decimals: ${decimals}, total supply: ${totalSupply}`);
+        console.log('token name: ', name);
+        console.log('token symbol: ', symbol);
+        console.log('token decimals: ', decimals);
+        console.log('token totalSupply: ', totalSupply);
+      } catch (err) {
+        console.log("Error: ", err);
+      }
+    }
+  }
+
   return (
     <div style={{ padding: '1rem' }}>
       <h3>How to DApp (?)</h3>
@@ -86,6 +112,14 @@ const App = () => {
 
       <div style={{ marginTop: '0.25rem' }}>
         <input onChange={e => setGreetingValue(e.target.value)} placeholder="Set greeting" />
+      </div>
+
+      <h5>NDToken</h5>
+      <div style={{ marginTop: '0.25rem' }}>
+        <button onClick={fetchNDTokenSymbolAndName}>Fetch NDToken symbol and name</button>
+        {
+          ndTokenInfo && <div>{ndTokenInfo}</div>
+        }
       </div>
 
       <h5>Balance</h5>
