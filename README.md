@@ -20,3 +20,9 @@ For reference, see https://dev.to/dabit3/the-complete-guide-to-full-stack-ethere
 Note:
 - this project is just an implementation of the tutorial linked above;
 - the token could have been named differently than what is proposed in the tutorial.
+
+### **Dive into Solidity, Udemy course**
+Proposed solutions (contracts) passing all tests, can be found under `dive-into-solidity-udemy-course/contracts`.
+
+For reference, see https://github.com/0xMacro/dive-into-solidity-udemy-course.
+
