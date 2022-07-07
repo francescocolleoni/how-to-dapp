@@ -12,7 +12,9 @@ node scripts/sample-script.js
 npx hardhat help
 ```
 
-# NDToken
+# other notes
+### **NDToken**
+
 For reference, see https://dev.to/dabit3/the-complete-guide-to-full-stack-ethereum-development-3j13.
 
 Note:
