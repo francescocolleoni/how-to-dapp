@@ -30,7 +30,7 @@ module.exports = {
       chainId: 1337
     },
     ropsten: {
-      url: process.env.HH_INFURA_URL,
+      url: HH_INFURA_URL,
       accounts: [`0x${HH_PRIVATE_KEY}`]
     }
   }
